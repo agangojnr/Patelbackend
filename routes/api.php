@@ -75,6 +75,7 @@ Route::group(['prefix' => 'user'], function () {
           Route::post('addJob', 'BusinessController@addJob');
         //End mew
 
+
         Route::get('booking', 'BookingMasterController@userBooking');
         Route::get('booking/{id}', 'BookingMasterController@singleBooking');
 

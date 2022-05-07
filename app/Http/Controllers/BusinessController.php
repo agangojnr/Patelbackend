@@ -210,6 +210,7 @@ class BusinessController extends Controller
         return response()->json(['msg' => null, 'data' => $master, 'success' => true], 200);
     }
 
+
     public function removematimonial(){
         $memberid = AppUsers::where('id',Auth()->user()->id)->value('memberid');
         $update = Members::where('user_id',$memberid)->update(['matrimonial'=>'no']);
