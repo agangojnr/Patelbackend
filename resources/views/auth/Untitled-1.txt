@@ -1,0 +1,14 @@
+[
+    {
+    'address':"6921 Steamtown Rd Ashley, OH 43003",
+    'beds':3
+},
+    {
+    'address':"121 N Grove St Ashley, OH 43003",
+    'beds':4
+},
+    {
+    'address':"2244 State Route 229 Ashley, OH 43003",
+    'beds':4
+},
+]
