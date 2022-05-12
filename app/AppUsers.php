@@ -12,7 +12,7 @@ class AppUsers extends Authenticatable
     use HasApiTokens;
 
     protected $fillable = [
-        'memberid','name', 'email', 'phone_no', 'otp', 'status', 'image', 'password', 'device_token', 'liked_data', 'noti', 'verified',
+        'username','memberid','name', 'email', 'phone_no', 'otp', 'status', 'image', 'password', 'device_token', 'liked_data', 'noti', 'verified',
     ];
     protected $table = 'app_users';
     protected $hidden = [

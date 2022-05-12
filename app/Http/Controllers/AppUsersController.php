@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\AdminSetting;
+//use App\AdminSetting;
 use App\AppUsers;
 use App\Branch;
 use App\Http\Requests\PasswordRequest;
 use App\Notifications;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +20,8 @@ class AppUsersController extends Controller
     public function index()
     {
 
-        abort_if(Gate::denies('appuser_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $appuser = AppUsers::all();
+        //abort_if(Gate::denies('appuser_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $appuser = AppUsers::where('user_type','!=','applicant')->get();
         return view('admin.appuser.index', compact('appuser'));
     }
     public function changeStatus($id)
@@ -45,7 +46,7 @@ class AppUsersController extends Controller
                 return response()->json(['msg' => 'Please Verify your account', 'data' => null, 'success' => false, 'verification' => true], 200);
             }
             if ($user['status'] == 0) {
-                return response()->json(['msg' => 'You are block by admin', 'data' => null, 'success' => false], 200);
+                return response()->json(['msg' => 'You are blocked by admin', 'data' => null, 'success' => false], 200);
             }
             $token = $user->createToken('user')->accessToken;
             $user['device_token'] = $request->device_token;
@@ -68,31 +69,34 @@ class AppUsersController extends Controller
         ]);
         $reqData = $request->all();
 
-        $app = AdminSetting::get(['id', 'verification', 'sms_gateway'])->first();
-        $flow = $app->verification == 1 ? 'verification' : 'home';
-        if ($app->verification != 1) {
-            $reqData['verified'] = 1;
-        } else {
-            try {
-                $res = (new Admin\TwilioController)->sendOTPUser($request, $app->sms_gateway, 'verification', 0);
-                if ($res['success'] === true) {
-                    $reqData['otp'] = $res['otp'];
+        // $app = AdminSetting::get(['id', 'verification', 'sms_gateway'])->first();
+        // $flow = $app->verification == 1 ? 'verification' : 'home';
+        // if ($app->verification != 1) {
+        //     $reqData['verified'] = 1;
+        // } else {
+        //     try {
+        //         $res = (new Admin\TwilioController)->sendOTPUser($request, $app->sms_gateway, 'verification', 0);
+        //         if ($res['success'] === true) {
+        //             $reqData['otp'] = $res['otp'];
 
-                }
-            } catch (\Exception $e) {
-                $reqData['verified'] = 1;
-                $reqData['otp'] = '0000';
+        //         }
+        //     } catch (\Exception $e) {
+        //         $reqData['verified'] = 1;
+        //         $reqData['otp'] = '0000';
 
-            }
-        }
-
+        //     }
+        // }
+        //$reqData['memberid'] = 1985;
         $data = AppUsers::create($reqData);
-        if ($app->verification != 1) {
+        //if ($app->verification != 1) {
             $token = $data->createToken('user')->accessToken;
             $data['token'] = $token;
-        }
-        return response()->json(['msg' => 'Welcome to to home of beauty', 'data' => $data, 'success' => true, 'flow' => $flow], 200);
+        //}
+        return response()->json(['msg' => 'Thanks for Registering please wait for admin response.', 'data' => $data, 'success' => true], 200);
     }
+
+
+
     public function newPassword(Request $request)
     {
         $request->validate([
@@ -236,4 +240,51 @@ class AppUsersController extends Controller
         }
         return response()->json(['msg' => 'Given OTP is invalid.', 'data' => null, 'success' => false], 200);
     }
+
+    public function activateblock($id){ return $id;
+    //     if (request()->ajax()) {
+    //         try {
+    //             $can_be_deleted = true;
+    //             $error_msg = '';
+
+    //             //Check if any routing has been done
+    //            //do logic here
+    //            $annou = true;
+
+    //             if ($can_be_deleted) {
+    //                 if (!empty($annou)) {
+    //                     DB::beginTransaction();
+    //                     $status = AppUsers::where('id', $id)->value('status');
+    //                     $newstatus = ($status == 0) ? 1 : 0;
+    //                     AppUsers::where('id', $id)
+    //                         ->update([
+    //                             'status' => $newstatus,
+    //                             ]);
+
+    //                     DB::commit();
+
+    //                     $output = ['success' => true,
+    //                             'msg' => "App User status changed Successfully"
+    //                         ];
+    //                 }else{
+    //                     $output = ['success' => false,
+    //                             'msg' => "Could not be Change status, Child record exist."
+    //                         ];
+    //                 }
+    //             } else {
+    //                 $output = ['success' => false,
+    //                             'msg' => $error_msg
+    //                         ];
+    //             }
+    //         } catch (\Exception $e) {
+    //             DB::rollBack();
+    //             \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
+
+    //             $output = ['success' => $e->getMessage(),
+    //                             'msg' => "Something Went Wrong"
+    //                         ];
+    //         }
+    //         return $output;
+    //     }
+     }
 }

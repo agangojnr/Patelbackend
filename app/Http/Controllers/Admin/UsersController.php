@@ -14,12 +14,9 @@ class UsersController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $id = User::has('employee')->pluck('id');
-        $users = User::with(['roles:id,title'])->whereNotIn('id',  $id)->get();
-      
-
+        $users = User::All();
         return view('admin.users.index', compact('users'));
     }
 

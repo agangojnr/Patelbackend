@@ -55,11 +55,7 @@ array(
                                 <td>{{ $user->name}}</td>
                                 <td> <a href="mailto:{{ $user->email}}">{{ $user->email}}</a></td>
                                 <td>
-                                    @forelse ($user->roles as $roles)
-                                    <span class="badge   badge-primary  m-1">{{$roles->title}}</span>
-                                    @empty
-                                    <span class="badge   badge-warning  m-1">{{__('No Data')}}</span>
-                                    @endforelse
+
                                 </td>
                                 <td class="d-flex">
 

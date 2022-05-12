@@ -29,7 +29,7 @@ Route::post('saveAdminData', 'Admin\AdminSettingController@setup');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth','coder']], function () {
-	Route::resource('user', 'UserController', ['except' => ['show']]);
+	Route::resource('user', 'UserController', ['except' => ['index']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
@@ -102,9 +102,12 @@ Route::group(['middleware' => ['auth', 'coder']], function () {
     Route::get('activate/{id}', 'AnnouncementController@activate')->name('activate');
     Route::post('acceptrejectjobpost', 'JobPostController@acceptrejectjobpost')->name('acceptrejectjobpost');
 
+
+
 });
 
 Route::get('appuser', 'AppUsersController@index')->name('appuser.index');
+Route::get('activateblock/{id}', 'AppUsersController@activateblock')->name('activateblock');
 Route::post('appuser/status/{id}', 'AppUsersController@changeStatus')->name('appuser.statusChange');
 
 Route::get('booking', 'BookingMasterController@index')->name('booking.index');

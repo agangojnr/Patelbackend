@@ -95,7 +95,7 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{route('information.index')}}">
-                    <i class="fas fa-bullhorn text-info"></i> {{ __('Information') }}
+                    <i class="fas fa-info-circle text-info"></i> {{ __('Information') }}
                 </a>
             </li>
 
@@ -127,7 +127,7 @@
              <li class="nav-item">
                 <!--<a class="nav-link" href="">-->
                 <a class="nav-link" href="{{route('jobpost.index')}}">
-                    <i class="fas fa-business-time text-info"></i> {{ __('Job Posts') }}
+                    <i class="fas fa-award text-info"></i> {{ __('Job Posts') }}
                 </a>
             </li>
 
@@ -159,12 +159,17 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{route('committee.index')}}">
-                    <i class="far fa-user text-info"></i> {{ __('Committee') }}
+                    <i class="fas fa-crown text-info"></i> {{ __('Committee') }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('appuser.index')}}">
+                    <i class="fa fa-tablet text-info"></i> {{ __('App User') }}
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('users.index')}}">
-                    <i class="far fa-user text-info"></i> {{ __('User') }}
+                    <i class="far fa-user text-info"></i> {{ __('Users') }}
                 </a>
             </li>
 
