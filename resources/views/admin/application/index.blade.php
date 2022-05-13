@@ -57,7 +57,7 @@ array(
                                         {{$loop->iteration}}
                                     </td>
                                     <td>
-                                        {{$app->member_type}}
+                                        {{$app->Town->town_name}}
                                     </td>
                                     <td>
                                         {{$app->firstname}} {{$app->midname}} {{$app->surname}}

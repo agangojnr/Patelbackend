@@ -121,9 +121,7 @@ class MyFamilyController extends Controller
     public function membersInfo(Request $request)
     {
         //$townid = Town::where('town_name','NAIROBI')->value('town_id');
-        $data = Members::addSelect([
-            'townid'=> Town::select('town_id')->where('town_name','NAIROBI')->whereColumn('town_id','members.town'),
-        ])->orderBy('firstname', 'asc')->get();
+        $data = Members::where('town',32)->orderBy('firstname', 'asc')->get();
         return response()->json(['msg' => null, 'data' => $data, 'success' => true], 200);
     }
 

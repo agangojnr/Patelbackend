@@ -6,8 +6,11 @@ use App\Application;
 use App\Members;
 use App\MyFamily;
 use App\Payment;
+use App\AppUsers;
+use App\Town;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +24,9 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        $applications = Members::orderby('user_id','DESC')->take(20)->get();
+        $applications = Members::where('town',32)->orderby('user_id','DESC')->get();
+
+        //$applications = Members::orderby('user_id','DESC')->get();
         $data = array(
             'applications'=>$applications,
         );
@@ -164,14 +169,27 @@ class ApplicationController extends Controller
                                 'application_status' => 'Accepted'
                                 ]);
 
+                        $details = Members::where('user_id', $id)->first();
+                        $userData['name'] = $details->firstname.' '.$details->midname.' '.$details->surname;
+                        $userData['email'] = $details->email;
+                        $userData['status'] = 1;
+                        $userData['memberid'] = $id;
+                        $userData['verified'] = 1;
+                        $userData['phone_no'] = $details->mobile;
+                        $userData['username'] = 'Pat'.''.mt_rand(1000, 9999);
+                        $userData['password'] = mt_rand(10, 99).''.Str::random(4);
+                        $userData['raw_password'] = $userData['password'];
+
+                        $data = AppUsers::create($userData);
+
                         DB::commit();
 
                         $output = ['success' => true,
-                                'msg' => "Application Deleted Successfully"
+                                'msg' => "Application Accepted Successfully"
                             ];
                     }else{
                         $output = ['success' => false,
-                                'msg' => "Could not be deleted, Child record exist."
+                                'msg' => "Could not be changed, Child record exist."
                             ];
                     }
                 } else {
@@ -184,7 +202,7 @@ class ApplicationController extends Controller
                 \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
 
                 $output = ['success' => false,
-                                'msg' => "Something Went Wrong"
+                                'msg' => $e->getMessage(),
                             ];
             }
             return $output;
@@ -214,7 +232,7 @@ class ApplicationController extends Controller
                         DB::commit();
 
                         $output = ['success' => true,
-                                'msg' => "Application Deleted Successfully"
+                                'msg' => "Application Rejected Successfully"
                             ];
                     }else{
                         $output = ['success' => false,

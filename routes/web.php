@@ -58,7 +58,6 @@ Route::group(['middleware' => ['auth', 'coder']], function () {
 			'centre' => 'CentreController',
 			'town' => 'TownController',
 
-
 		]);
 		Route::get('api/county-dropdown', 'SubCountyController@countyDropDownData');
 		Route::get('review', 'ReviewController@index')->name('review.index');
